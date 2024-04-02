@@ -1,13 +1,18 @@
 import { Router } from "express";
-import { createProduct, findAllProducts, findPriceByUserAndProductName} from "./products.contoller.js"
+import { createProduct, deleteProduct, findAllProducts, findOneProduct, findPriceByUserAndProductName, updateProduct} from "./products.contoller.js"
 
 export const router = Router()
 
 
-router.post('/products', createProduct)
+router
+.route('/')
+.get(findAllProducts)
+.post(createProduct)
 
-router.get('/products', findAllProducts)
-
+router
+.route('/:id')
+.get(findOneProduct)
+.patch(updateProduct)
+.delete(deleteProduct)
 
 router.get('/price/:userId/:productName', findPriceByUserAndProductName);
-

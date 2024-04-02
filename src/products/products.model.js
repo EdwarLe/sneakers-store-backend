@@ -43,6 +43,12 @@ const Product = sequelize.define('product', {
         type: DataTypes.INTEGER,
         allowNull: true,
         field: 'user_id'
+    },
+
+    status: {
+        type: DataTypes.BOOLEAN,
+        allowNull:false,
+        defaultValue: true,
     }
 })
 
