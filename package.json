@@ -3,14 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node --watch src/app.js",
+    "start": "node --watch src/server.js",
+    "server": "json-server --port 3001 --watch db.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Edwar León",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2"
+    "dotenv": "^16.4.5",
+    "env-var": "^7.4.1",
+    "express": "^4.19.2",
+    "json-server": "^1.0.0-alpha.23",
+    "pg": "^8.11.4",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.2"
   }
 }
