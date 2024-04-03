@@ -1,11 +1,21 @@
+import { toLower } from "../utils/utils.js"
 import Product from "./products.model.js"
 
 export class ProductService {
-    async findOneProduct (id) {
+    async findOneProductById (id) {
         return await Product.findOne({
             where:{
                 id,
-                status: true
+                stock: true
+            }
+        })
+    }
+
+    async findOneProductByname (name) {
+        return await Product.findOne({
+            where:{
+                'brand': name,
+                stock: true
             }
         })
     }
@@ -13,13 +23,16 @@ export class ProductService {
     async findAllProducts () {
         return await Product.findAll({
             where: {
-                status: true
+                stock: true
             }
         })
     }
 
     async createProduct (data) {
-        return await Product.create(data)
+        const brandToLower = toLower(data.brand)
+        const product = await Product.create(data)
+        const productBrandUpdated = await product.update({ brand: brandToLower})
+        return productBrandUpdated
     }
 
     async updtateProduct (product, data) {

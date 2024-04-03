@@ -39,6 +39,12 @@ const Product = sequelize.define('product', {
         allowNull: false
     },
 
+    specialPrice: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        field: 'special_price'
+    },
+
     userId: {
         type: DataTypes.INTEGER,
         allowNull: true,

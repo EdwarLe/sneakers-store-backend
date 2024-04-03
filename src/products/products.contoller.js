@@ -3,10 +3,10 @@ import { ProductService } from "./products.service.js"
 
 const productService = new ProductService()
 
-export const findOneProduct = async(req, res) => {
+export const findOneProductById = async(req, res) => {
     try {
         const { id } = req.params
-        const product = await productService.findOneProduct(id)
+        const product = await productService.findOneProductById(id)
 
         if(!product) {
             return res.status(404).json({
@@ -42,7 +42,7 @@ export const createProduct = async(req, res) => {
 export const updateProduct = async(req, res) => {
     try {
         const { id } = req.params
-        const product = await productService.findOneProduct(id)
+        const product = await productService.findOneProductById(id)
 
         if(!product) {
             return res.status(404).json({
@@ -63,7 +63,7 @@ export const updateProduct = async(req, res) => {
 export const deleteProduct = async(req, res) => {
     try {
         const { id } = req.params
-        const product = await productService.findOneProduct(id)
+        const product = await productService.findOneProductById(id)
 
         if(!product) {
             return res.status(404).json({
@@ -79,9 +79,4 @@ export const deleteProduct = async(req, res) => {
     }
 }
 
-export const findPriceByUserAndProductName = (req, res) => {
-    const {userId, productName} = req.params
-    res.json({
-        message:`Este endpoint obtendrá un usuario con id: ${userId} y una sneaker de marca ${productName}`
-    })
-}
+
