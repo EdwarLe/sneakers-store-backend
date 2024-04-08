@@ -1,6 +1,7 @@
 import { ProductService } from "../products/products.service.js"
 import { UserService } from "../users/users.service.js"
-import { toLower } from "../utils/utils.js"
+import { toLower } from "../common/utils/utils.js"
+import { validatePartialPrice, validatePrice } from "./price.schema.js"
 import { SpecialPriceService } from "./price.service.js"
 
 const specialPriceService = new SpecialPriceService()
@@ -9,8 +10,15 @@ const productService = new ProductService()
 
 export const createSpecialPrice = async(req, res) => {
     try {
-        const dataSpecialPrice = req.body
-        const specialPrice = await specialPriceService.createSpecialPrices(dataSpecialPrice)
+        const { hasError, errorMessages, priceDataValidated } = validatePrice(req.body)
+        
+        if(hasError) {
+            return res.status(422).json({
+                status: 'error',
+                message: errorMessages
+            })
+        }
+        const specialPrice = await specialPriceService.createSpecialPrices(priceDataValidated)
         return res.status(201).json(specialPrice)
     } catch (error) {
         return res.status(500).json(error)
@@ -45,8 +53,15 @@ export const findOneSpecialPrice = async(req, res) => {
 
 export const updateSpecialPrice = async(req, res) => {
     try {
+        const { hasError, errorMessages, priceDataUpdatedValidated } = validatePartialPrice(req.body)
+
+        if(hasError) {
+            return res.status(422).json({
+                status: 'error',
+                message: errorMessages
+            })
+        }
         const { id } = req.params
-        const dataSpecialPrice = req.body
         const specialPrice = await specialPriceService.findOneSpecialPrice(id)
         if(!specialPrice) {
             return res.status(404).json({
@@ -55,7 +70,7 @@ export const updateSpecialPrice = async(req, res) => {
             })
         }
 
-        const specialPriceUpdated = await specialPriceService.updateSpecialPrice(specialPrice, dataSpecialPrice)
+        const specialPriceUpdated = await specialPriceService.updateSpecialPrice(specialPrice, priceDataUpdatedValidated)
         return res.status(200).json(specialPriceUpdated)
     } catch (error) {
         return res.status(500).json(error)

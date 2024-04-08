@@ -1,4 +1,4 @@
-import { toLower } from "../utils/utils.js"
+import { toLower } from "../common/utils/utils.js"
 import Product from "./products.model.js"
 
 export class ProductService {
