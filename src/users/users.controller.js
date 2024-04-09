@@ -1,11 +1,18 @@
+import { validatePartialUser, validateUser } from "./users.schema.js"
 import { UserService } from "./users.service.js"
 
 const userService = new UserService()
 
 export const createUser = async(req, res) => {
     try {
-        const dataUser = req.body
-        const user = await userService.createUser(dataUser)
+        const { hasError, errorMessages, userValidated } = validateUser(req.body)
+        if(hasError) {
+            return res.status(422).json({
+                status: 'error',
+                message: errorMessages
+            })
+        }
+        const user = await userService.createUser(userValidated)
         return res.status(201).json(user)
     } catch (error) {
         return res.status(500).json(error)
@@ -40,6 +47,13 @@ export const findOneUser = async(req, res) => {
 
 export const updateUser = async(req, res) => {
     try {
+        const { hasError, errorMessages, userUpdatedValidated } = validatePartialUser(req.body)
+        if(hasError) {
+            return res.status(422).json({
+                status: 'error',
+                message: errorMessages
+            })
+        }
         const { id } = req.params
         const user = await userService.findOneUser(id)
         if(!user) {
@@ -49,8 +63,7 @@ export const updateUser = async(req, res) => {
             })
         }
 
-        const dataUser = req.body
-        const userUpdated = await userService.updateUser(user, dataUser)
+        const userUpdated = await userService.updateUser(user, userUpdatedValidated)
         return res.status(200).json(userUpdated)
     } catch (error) {
         return res.status(500).json(error)
