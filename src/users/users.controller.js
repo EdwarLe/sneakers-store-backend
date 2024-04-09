@@ -30,14 +30,7 @@ export const findAllUsers = async(req, res) => {
 
 export const findOneUser = async(req, res) => {
     try {
-        const { id } = req.params
-        const user = await userService.findOneUser(id)
-        if(!user) {
-            return res.status(404).json({
-                status: 'error',
-                message: `User with id: ${id} was not found`
-            })
-        }
+        const { user } = req
 
         return res.status(200).json(user)
     } catch (error) {
@@ -54,14 +47,7 @@ export const updateUser = async(req, res) => {
                 message: errorMessages
             })
         }
-        const { id } = req.params
-        const user = await userService.findOneUser(id)
-        if(!user) {
-            return res.status(404).json({
-                status: 'error',
-                message: `User with id: ${id} was not found`
-            })
-        }
+        const { user } = req
 
         const userUpdated = await userService.updateUser(user, userUpdatedValidated)
         return res.status(200).json(userUpdated)
@@ -72,15 +58,8 @@ export const updateUser = async(req, res) => {
 
 export const deleteUser = async(req, res) => {
     try {
-        const { id } = req.params
-        const user = await userService.findOneUser(id)
-        if(!user) {
-            return res.status(404).json({
-                status: 'error',
-                message: `User with id: ${id} was not found`
-            })
-        }
-
+        const { user } = req
+        
         await userService.deleteUser(user)
         return res.status(204).json(null)
     } catch (error) {
