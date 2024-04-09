@@ -6,15 +6,7 @@ const productService = new ProductService()
 
 export const findOneProductById = async(req, res) => {
     try {
-        const { id } = req.params
-        const product = await productService.findOneProductById(id)
-
-        if(!product) {
-            return res.status(404).json({
-                status: "error",
-                message: `Passenger with  id: ${id} not found`
-            })
-        }
+        const { product } = req
         return res.status(200).json(product)
     } catch (error) {
         return res.status(500).json(error)
@@ -56,16 +48,7 @@ export const updateProduct = async(req, res) => {
                 message: errorMessages
             })
         }
-        const { id } = req.params
-        const product = await productService.findOneProductById(id)
-
-        if(!product) {
-            return res.status(404).json({
-                status: 'error',
-                message: `Product with id: ${id} was not found`
-            })
-        }
-
+        const { product } = req
         const productUpdated = await productService.updtateProduct(product, productUpdatedValidated)
         return res.status(200).json(productUpdated)
     } catch (error) {
@@ -75,15 +58,7 @@ export const updateProduct = async(req, res) => {
 
 export const deleteProduct = async(req, res) => {
     try {
-        const { id } = req.params
-        const product = await productService.findOneProductById(id)
-
-        if(!product) {
-            return res.status(404).json({
-                status: 'error',
-                message: `Product with id: ${id} was not found`
-            })
-        }
+        const { product } = req
 
         await productService.deleteProduct(product)
         return res.status(204).json(null)
