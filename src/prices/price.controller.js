@@ -36,15 +36,7 @@ export const findAllSpecialPrices = async(req, res) => {
 
 export const findOneSpecialPrice = async(req, res) => {
     try {
-        const { id } = req.params
-        const specialPrice = await specialPriceService.findOneSpecialPrice(id)
-        if(!specialPrice) {
-            return res.status(404).json({
-                status: 'error',
-                message: `The price with id: ${id} was not found`
-            })
-        }
-
+        const { specialPrice } = req
         return res.status(200).json(specialPrice)
     } catch (error) {
         return res.status(500).json(error)
@@ -61,15 +53,8 @@ export const updateSpecialPrice = async(req, res) => {
                 message: errorMessages
             })
         }
-        const { id } = req.params
-        const specialPrice = await specialPriceService.findOneSpecialPrice(id)
-        if(!specialPrice) {
-            return res.status(404).json({
-                status: 'error',
-                message: `The price with id: ${id} was not found`
-            })
-        }
-
+        const { specialPrice } = req
+        
         const specialPriceUpdated = await specialPriceService.updateSpecialPrice(specialPrice, priceDataUpdatedValidated)
         return res.status(200).json(specialPriceUpdated)
     } catch (error) {
@@ -79,15 +64,8 @@ export const updateSpecialPrice = async(req, res) => {
 
 export const deleteSpecialPrice = async(req, res) => {
     try {
-        const { id } = req.params
-        const specialPrice = await specialPriceService.findOneSpecialPrice(id)
-        if(!specialPrice) {
-            return res.status(404).json({
-                status: 'error',
-                message: `The price with id: ${id} was not found`
-            })
-        }
-
+        const { specialPrice } = req
+        
         await specialPriceService.deleteSpecialPrice(specialPrice)
         return res.status(204).json(null)
     } catch (error) {
